@@ -1,0 +1,29 @@
+#!/bin/sh
+# Custom build wrapper for the th egg.
+#
+# chicken-install invokes this script instead of csc for each build step,
+# forwarding the exact command line csc would have received. We first make
+# sure the bundled TH sources are compiled into a static archive, then hand
+# the build off to the real csc so the rest of the (dynamic/static/import)
+# builds proceed normally.
+set -e
+
+if [ ! -f TH/build/libTHTensor.a ]; then
+  make -C TH static CC=cc BLAS=openblas OMP=0
+fi
+
+# The TH archive references BLAS symbols, so linking steps need OpenBLAS.
+# Distributions usually ship only the runtime soname (libopenblas.so.0)
+# without a libopenblas.so development symlink, so resolve it via ldconfig
+# and pass the file itself to the linker.
+case " $* " in
+  *" -c "*) ;; # compile-only: no link step, nothing to add
+  *)
+    blas=$(ldconfig -p 2>/dev/null | grep -oE '/[^ ]*libopenblas[^ ]*\.so[^ ]*' | head -n1)
+    if [ -n "$blas" ]; then
+      exec csc "$@" -L "$blas"
+    fi
+    ;;
+esac
+
+exec csc "$@"

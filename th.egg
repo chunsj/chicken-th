@@ -1,0 +1,13 @@
+((author "me")
+ (synopsis "CHICKEN bindings for the TH (Torch) numerics library")
+ (license "BSD")
+ (version "0.2.0")
+ (category "math")
+ (dependencies)
+ (components
+  (extension th
+    (custom-build "./build-th")
+    (csc-options "-C" "-ITH")
+    (link-options "-L" "TH/build/libTHTensor.a"
+                  "-L" "-lpthread"
+                  "-L" "-lm"))))
