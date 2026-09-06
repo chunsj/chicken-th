@@ -1,4 +1,4 @@
-# th
+# TH
 
 CHICKEN Scheme bindings for the TH (Torch) tensor library
 (`THTensor`, `THGenerator`, `THLongStorage`).
