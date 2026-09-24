@@ -12,7 +12,7 @@
 
 EGG             := th
 DEFAULT_PREFIX  := /usr/local/lib/chicken
-DEFAULT_REPO    := $(DEFAULT_PREFIX)/11
+DEFAULT_REPO    := $(DEFAULT_PREFIX)/12
 
 # chicken-install installs into /usr/local by default. If that is not
 # writable, fall back to a per-user repository. CHICKEN_INSTALL_PREFIX /
@@ -20,7 +20,7 @@ DEFAULT_REPO    := $(DEFAULT_PREFIX)/11
 ROOT_WRITABLE   := $(shell test -w /usr/local && echo 1)
 ifeq ($(ROOT_WRITABLE),1)
 INSTALL_ENV     :=
-REPO            := $(or $(CHICKEN_INSTALL_REPOSITORY),/usr/local/lib/chicken/11)
+REPO            := $(or $(CHICKEN_INSTALL_REPOSITORY),/usr/local/lib/chicken/12)
 else
 INSTALL_ENV     := CHICKEN_INSTALL_PREFIX="$(or $(CHICKEN_INSTALL_PREFIX),$(DEFAULT_PREFIX))" \
                    CHICKEN_INSTALL_REPOSITORY="$(or $(CHICKEN_INSTALL_REPOSITORY),$(DEFAULT_REPO))"

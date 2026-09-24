@@ -25,9 +25,14 @@ enough. Otherwise redirect the installation:
 
 ```
 CHICKEN_INSTALL_PREFIX=$HOME/.local/lib/chicken \
-CHICKEN_INSTALL_REPOSITORY=$HOME/.local/lib/chicken/11 \
+CHICKEN_INSTALL_REPOSITORY=$HOME/.local/lib/chicken/12 \
 chicken-install
 ```
+
+CHICKEN 6 keeps its default repository under `/usr/local/lib/chicken/12`
+(the old `…/11` was CHICKEN 5). If you installed CHICKEN elsewhere,
+`chicken-install` reports the right value via the `###STATUS` above, or
+check with `csi -p '(repository-path)'`.
 
 Optional build tweaks are passed through `make` variables inside
 `build-th` (e.g. `BLAS=`, `OMP=`, `CC=`) if defaults don't fit your
@@ -42,7 +47,7 @@ repository). Run the tests manually instead (below).
 After install, put the repository on the module path and import:
 
 ```
-CHICKEN_REPOSITORY=$HOME/.local/lib/chicken/11 csi
+CHICKEN_REPOSITORY=$HOME/.local/lib/chicken/12 csi
 # (import th)
 ```
 
@@ -76,7 +81,8 @@ with the prefix `<type>-tensor-` where `<type>` is `float`, `double`,
 * Construction: `make-float-tensor`…`make-long-tensor`,
   `<type>-tensor-clone` (ranks 1–4; `make-*` raises for other ranks).
 * Shape / metadata: `dims`, `strides`, `dim`, `size`, `stride`,
-  `numel`, `contiguous?`, `data`.
+  `numel`, `contiguous?`, `data` (raw TH pointer), plus `tensor?`,
+  `tensor->string` (numpy-format text), `tensor->pointer`.
 * Element access: `ref`, `set!`, `get1d..get4d`, `set1d!..set4d!`
   (all validated; wrong rank/bounds raise a Scheme error, see Errors).
 * Conversions: `<type>-tensor->list`, `list-><type>-tensor` (takes
